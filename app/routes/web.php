@@ -3,6 +3,8 @@
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Fruit\CategoryController;
+use App\Http\Controllers\Fruit\ItemController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,3 +26,10 @@ Route::get('/register', [AuthController::class, 'register'])->name('register')->
 Route::post('/login', [AuthController::class, 'authenticate']);
 Route::post('/register', [AuthController::class, 'process']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
+
+
+//shop
+Route::get('/category', [CategoryController::class,'index'])->name('categories')->middleware('auth');
+Route::post('/category', [CategoryController::class,'store'])->middleware('auth');
+Route::get('/item', [ItemController::class,'index'])->name('item')->middleware('auth');
+Route::post('/item', [ItemController::class,'store'])->middleware('auth');

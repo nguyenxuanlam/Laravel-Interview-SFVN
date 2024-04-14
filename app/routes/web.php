@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Auth\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+// route dashboard
+Route::get('/', DashboardController::class)->name('dashboard')->middleware('auth');
+
+//Auth
+Route::get('/login', [AuthController::class, 'index'])->name('login')->middleware('guest');
+Route::get('/register', [AuthController::class, 'register'])->name('register')->middleware('guest');
+Route::post('/login', [AuthController::class, 'authenticate']);
+Route::post('/register', [AuthController::class, 'process']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');

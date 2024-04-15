@@ -23,7 +23,7 @@ class ItemRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:items,name',
-            'price' => 'required',
+            'price' => 'required|numeric',
             'unit' => 'required',
             'category_id' => 'required'
         ];

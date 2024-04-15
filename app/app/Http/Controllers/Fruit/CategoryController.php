@@ -4,20 +4,26 @@ namespace App\Http\Controllers\Fruit;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
-use App\Models\Category;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
+use App\Service\CategoryService;
 
 class CategoryController extends Controller
 {
+    public $categoryService;
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
+    /*
     /**
      * Display a listing of the resource.
      * @return View
      */
     public function index()
     {
-        $fruitCategories = Category::query()->orderBy('name')->get();
-        return view('shop.fruit_category',[
+        $fruitCategories = $this->categoryService->getAllCategory();
+        return view('shop.fruit_category', [
             'fruitCategories' => $fruitCategories
         ]);
     }
@@ -28,7 +34,7 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         $input = $request->all();
-        Category::create($input);
+        $this->categoryService->saveCategoryData($input);
         return redirect()->route('categories');
     }
 }

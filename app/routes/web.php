@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Fruit\CategoryController;
 use App\Http\Controllers\Fruit\ItemController;
+use App\Http\Controllers\Order\OrderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,3 +34,6 @@ Route::get('/category', [CategoryController::class,'index'])->name('categories')
 Route::post('/category', [CategoryController::class,'store'])->middleware('auth');
 Route::get('/item', [ItemController::class,'index'])->name('item')->middleware('auth');
 Route::post('/item', [ItemController::class,'store'])->middleware('auth');
+
+//purchase
+Route::resource('/order',OrderController::class)->middleware('auth');

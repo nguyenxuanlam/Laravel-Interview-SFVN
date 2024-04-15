@@ -4,19 +4,28 @@ namespace App\Http\Controllers\Fruit;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ItemRequest;
-use App\Models\Category;
-use App\Models\Item;
-use Illuminate\Http\Request;
+use App\Service\CategoryService;
+use App\Service\ItemService;
 
 class ItemController extends Controller
 {
+
+    public $itemService;
+    public $categoryService;
+
+    public function __construct(ItemService $itemService, CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+        $this->itemService = $itemService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $fruits =  Item::with('category')->orderBy('name')->get();
-        $fruitCategories = Category::query()->orderBy('name')->get();
+        $fruits = $this->itemService->getAllWithRelation('category');
+        $fruitCategories = $this->categoryService->getAllCategory();
         return view('shop.fruit_item', [
             'fruits' => $fruits,
             'fruitCategories' => $fruitCategories
@@ -29,7 +38,7 @@ class ItemController extends Controller
     public function store(ItemRequest $request)
     {
         $input = $request->all();
-        Item::create($input);
+        $this->itemService->saveItemData($input);
         return redirect()->route('item');
     }
 
